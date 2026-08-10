@@ -13,6 +13,8 @@ const GRADE_COLORS: Record<string, string> = {
 
 export function DeptAdminDashboard() {
   const { profile } = useAuth();
+  console.log('HOD PROFILE:', profile);
+console.log('HOD DEPARTMENT ID:', profile?.department_id);
   const [students, setStudents] = useState<Profile[]>([]);
   const [faculty, setFaculty] = useState<Profile[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
@@ -24,14 +26,30 @@ export function DeptAdminDashboard() {
   const [materials, setMaterials] = useState<Material[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    Promise.all([
-      fetchStudentProfiles(), fetchFacultyProfiles(), fetchSubjects(),
-      fetchAllResults(), fetchAllExams(), fetchSections(),
-    ]).then(([s, f, sub, r, e, sec]) => {
-      setStudents(s); setFaculty(f); setSubjects(sub); setResults(r); setExams(e); setSections(sec);
-    }).finally(() => setLoading(false));
-  }, []);
+ useEffect(() => {
+  Promise.all([
+    fetchStudentProfiles(),
+    fetchFacultyProfiles(),
+    fetchSubjects(),
+    fetchAllResults(),
+    fetchAllExams(),
+    fetchSections(),
+  ])
+    .then(([s, f, sub, r, e, sec]) => {
+
+      console.log('STUDENTS FROM DATABASE:', s);
+      console.log('FACULTY FROM DATABASE:', f);
+      console.log('SUBJECTS FROM DATABASE:', sub);
+
+      setStudents(s);
+      setFaculty(f);
+      setSubjects(sub);
+      setResults(r);
+      setExams(e);
+      setSections(sec);
+    })
+    .finally(() => setLoading(false));
+}, []);
 
   useEffect(() => {
     if (profile?.department_id) {
@@ -123,23 +141,64 @@ export function DeptAdminDashboard() {
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatCard icon={User} label="Faculty" value={deptFaculty.length} color="accent" />
-            <StatCard icon={Users} label="Students" value={deptStudents.length} color="primary" />
-            <StatCard icon={BookOpen} label="Subjects" value={deptSubjects.length} color="success" />
-            <StatCard icon={Users} label="Sections" value={deptSections.length} color="warning" />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatCard icon={FileText} label="Active Exams" value={exams.filter((e) => deptSubjectIds.has(e.subject_id ?? '') && e.status === 'published').length} color="primary" />
-            <StatCard icon={ClipboardList} label="Assignments" value={deptAssignments.length} color="accent" />
-            <StatCard icon={FolderOpen} label="Materials" value={deptMaterials.length} color="success" />
-            <StatCard icon={GraduationCap} label="Academic Records" value={records.length} color="warning" />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatCard icon={TrendingUp} label="Dept Avg Score" value={`${acAvgScore}%`} color={acAvgScore >= 50 ? 'success' : 'error'} />
-            <StatCard icon={Award} label="Pass Rate" value={`${acPassRate}%`} color="success" />
-            <StatCard icon={Award} label="Fail Rate" value={`${acFailRate}%`} color="error" />
-            <StatCard icon={BarChart3} label="Exam Avg" value={`${avgScore}%`} color="primary" />
-          </div>
+  <StatCard
+    icon={User}
+    label="Faculty"
+    value={deptFaculty.length}
+    color="accent"
+  />
+
+  <StatCard
+    icon={Users}
+    label="Students"
+    value={deptStudents.length}
+    color="primary"
+  />
+
+  <StatCard
+    icon={BookOpen}
+    label="Subjects"
+    value={deptSubjects.length}
+    color="success"
+  />
+
+  <StatCard
+    icon={Users}
+    label="Sections"
+    value={deptSections.length}
+    color="warning"
+  />
+</div>
+
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  <StatCard
+    icon={TrendingUp}
+    label="Dept Avg Score"
+    value={`${acAvgScore}%`}
+    color={acAvgScore >= 50 ? 'success' : 'error'}
+  />
+
+  <StatCard
+    icon={Award}
+    label="Pass Rate"
+    value={`${acPassRate}%`}
+    color="success"
+  />
+
+  <StatCard
+    icon={Award}
+    label="Fail Rate"
+    value={`${acFailRate}%`}
+    color="error"
+  />
+
+  <StatCard
+    icon={GraduationCap}
+    label="Academic Records"
+    value={records.length}
+    color="warning"
+  />
+</div>
 
           <div className="grid lg:grid-cols-2 gap-6">
             <div className="card p-6">

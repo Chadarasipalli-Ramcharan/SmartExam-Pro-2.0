@@ -120,14 +120,38 @@ export async function submitExamResult(studentId: string, examId: string, score:
 // ===== University structure queries =====
 
 export async function fetchDepartments(): Promise<Department[]> {
-  const { data, error } = await supabase.from('departments').select('*').order('name');
-  if (error) throw error;
+  console.log('🔵 fetchDepartments() called');
+
+  const { data, error } = await supabase
+    .from('departments')
+    .select('*')
+    .order('name');
+
+  console.log('🟢 Departments data:', data);
+  console.log('🔴 Departments error:', error);
+
+  if (error) {
+    throw error;
+  }
+
   return data as Department[];
 }
 
 export async function fetchAcademicYears(): Promise<AcademicYear[]> {
-  const { data, error } = await supabase.from('academic_years').select('*').order('name');
-  if (error) throw error;
+  console.log('🔵 fetchAcademicYears() called');
+
+  const { data, error } = await supabase
+    .from('academic_years')
+    .select('*')
+    .order('name');
+
+  console.log('🟢 Academic years data:', data);
+  console.log('🔴 Academic years error:', error);
+
+  if (error) {
+    throw error;
+  }
+
   return data as AcademicYear[];
 }
 
@@ -147,22 +171,66 @@ export async function fetchSections(semesterId?: string): Promise<Section[]> {
   return data as Section[];
 }
 
-export async function fetchSubjects(filters?: { departmentId?: string; semesterId?: string; sectionId?: string; facultyId?: string }): Promise<SubjectWithDetails[]> {
-  let q = supabase.from('subjects').select('*, department:departments(id,name,code), semester:semesters(id,name), section:sections(id,name), faculty:profiles(id,full_name,email)').order('code');
-  if (filters?.departmentId) q = q.eq('department_id', filters.departmentId);
-  if (filters?.semesterId) q = q.eq('semester_id', filters.semesterId);
-  if (filters?.sectionId) q = q.eq('section_id', filters.sectionId);
-  if (filters?.facultyId) q = q.eq('faculty_id', filters.facultyId);
+export async function fetchSubjects(
+  filters?: {
+    departmentId?: string;
+    semesterId?: string;
+    sectionId?: string;
+    facultyId?: string;
+  }
+): Promise<SubjectWithDetails[]> {
+  let q = supabase
+    .from('subjects')
+    .select(`
+      *,
+      department:departments(id,name,code),
+      semester:semesters(id,name),
+      section:sections(id,name),
+      faculty:profiles(id,full_name,email)
+    `)
+    .order('code');
+
+  if (filters?.departmentId) {
+    q = q.eq('department_id', filters.departmentId);
+  }
+
+  if (filters?.semesterId) {
+    q = q.eq('semester_id', filters.semesterId);
+  }
+
+  if (filters?.sectionId) {
+    q = q.eq('section_id', filters.sectionId);
+  }
+
+  if (filters?.facultyId) {
+    q = q.eq('faculty_id', filters.facultyId);
+  }
+
   const { data, error } = await q;
+
   if (error) throw error;
+
   return data as SubjectWithDetails[];
 }
 
-export async function fetchSubject(id: string): Promise<SubjectWithDetails | null> {
+
+export async function fetchSubject(
+  id: string
+): Promise<SubjectWithDetails | null> {
   const { data, error } = await supabase
-    .from('subjects').select('*, department:departments(id,name,code), semester:semesters(id,name), section:sections(id,name), faculty:profiles(id,full_name,email)')
-    .eq('id', id).maybeSingle();
+    .from('subjects')
+    .select(`
+      *,
+      department:departments(id,name,code),
+      semester:semesters(id,name),
+      section:sections(id,name),
+      faculty:profiles(id,full_name,email)
+    `)
+    .eq('id', id)
+    .maybeSingle();
+
   if (error) throw error;
+
   return data as SubjectWithDetails | null;
 }
 

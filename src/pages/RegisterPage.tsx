@@ -30,9 +30,28 @@ export function RegisterPage() {
   const [designation, setDesignation] = useState('');
 
   useEffect(() => {
-    fetchDepartments().then(setDepartments).catch(() => {});
-    fetchAcademicYears().then(setAcademicYears).catch(() => {});
-  }, []);
+  async function loadUniversityStructure() {
+    console.log('Loading university structure...');
+
+    try {
+      const departmentsData = await fetchDepartments();
+      console.log('Departments loaded:', departmentsData);
+      setDepartments(departmentsData);
+    } catch (err) {
+      console.error('Departments loading error:', err);
+    }
+
+    try {
+      const academicYearsData = await fetchAcademicYears();
+      console.log('Academic years loaded:', academicYearsData);
+      setAcademicYears(academicYearsData);
+    } catch (err) {
+      console.error('Academic years loading error:', err);
+    }
+  }
+
+  loadUniversityStructure();
+}, []);  
 
   function validate(): string | null {
     if (fullName.trim().length < 3 || fullName.trim().length > 50) return 'Full name must be 3–50 characters.';
