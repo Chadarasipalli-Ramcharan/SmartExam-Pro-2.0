@@ -916,10 +916,7 @@ className="absolute inset-0 bg-cover bg-center scale-110 -translate-y-56 -transl
 
               <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
 
-                Bring academic management, student activities,
-                faculty workflows, and institutional analytics
-                into one powerful platform.
-
+                 A smarter way to run modern education — bringing teaching, learning, assessment, collaboration, and academic operations together in one connected experience.
               </p>
 
 
