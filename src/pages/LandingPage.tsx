@@ -207,7 +207,7 @@ className="absolute inset-0 bg-cover bg-center scale-110 -translate-y-56 -transl
 
           {/* Dark overlay */}
 
-          <div className="absolute inset-0 bg-slate-950/85" />
+          <div className="absolute inset-0 bg-slate-950/75" />
 
           
           {/* Image grid */}
