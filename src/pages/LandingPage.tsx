@@ -62,7 +62,7 @@ export function LandingPage() {
     {
       icon: Layers3,
       title: 'Unified Academic Hub',
-      desc: "Bring the institution's academic workflow together instead of managing disconnected systems.",
+      desc: " the institution's academic workflow together instead of managing disconnected systeBringms.",
     },
   ];
 
@@ -268,10 +268,7 @@ className="absolute inset-0 bg-cover bg-center scale-110 -translate-y-56 -transl
 
               <p className="mx-auto mt-7 max-w-3xl text-base leading-8 text-slate-200/85 sm:text-lg">
 
-                Built for modern universities, SmartExam Pro connects students,
-                faculty, departments, assessments, and academic workflows
-                through one intelligent digital ecosystem.
-
+                 A smarter way to run modern education — bringing teaching, learning, assessment, collaboration, and academic operations together in one connected experience.
               </p>
 
 
@@ -916,7 +913,7 @@ className="absolute inset-0 bg-cover bg-center scale-110 -translate-y-56 -transl
 
               <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
 
-                 A smarter way to run modern education — bringing teaching, learning, assessment, collaboration, and academic operations together in one connected experience.
+                One intelligent workspace for your entire academic ecosystem — connecting faculty, students, departments, assessments, and academic operations in one seamless experience.
               </p>
 
 
