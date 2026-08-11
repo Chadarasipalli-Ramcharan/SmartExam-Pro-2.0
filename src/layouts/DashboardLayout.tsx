@@ -47,6 +47,7 @@ const facultyNav: NavItem[] = [
   { to: '/faculty/lab-tasks', label: 'Lab Tasks', icon: FlaskConical },
   { to: '/faculty/materials', label: 'Materials', icon: FolderOpen },
   { to: '/faculty/quizzes', label: 'Quizzes', icon: FileQuestion },
+  { to: '/faculty/results', label: 'Results', icon: BarChart3 },
   { to: '/faculty/academic-records', label: 'Academic Records', icon: GraduationCap },
   { to: '/faculty/polls', label: 'Polls', icon: Vote },
   { to: '/faculty/announcements', label: 'Announcements', icon: Megaphone },

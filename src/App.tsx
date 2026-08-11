@@ -49,6 +49,7 @@ import { FacultyMaterials } from '@/pages/faculty/FacultyMaterials';
 import { FacultyPolls } from '@/pages/faculty/FacultyPolls';
 import { FacultyAnnouncements } from '@/pages/faculty/FacultyAnnouncements';
 import { FacultyQuizManagement } from '@/pages/faculty/FacultyQuizManagement';
+import { FacultyResults } from '@/pages/faculty/FacultyResults';  
 
 // Dept Admin pages
 import { DeptAdminDashboard } from '@/pages/deptadmin/DeptAdminDashboard';
@@ -126,6 +127,7 @@ export default function App() {
         <Route path="/faculty/quizzes" element={<FacultyQuizManagement />} />
         <Route path="/faculty/polls" element={<FacultyPolls />} />
         <Route path="/faculty/announcements" element={<FacultyAnnouncements />} />
+        <Route path="/faculty/results" element={<FacultyResults />} />
       </Route>
 
       {/* Shared routes */}

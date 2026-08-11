@@ -253,11 +253,30 @@ export async function fetchAssignment(id: string): Promise<AssignmentWithDetails
   return data as AssignmentWithDetails | null;
 }
 
-export async function fetchAssignmentSubmissions(assignmentId: string): Promise<AssignmentSubmissionWithDetails[]> {
+export async function fetchAssignmentSubmissions(
+  assignmentId: string
+): Promise<AssignmentSubmissionWithDetails[]> {
   const { data, error } = await supabase
-    .from('assignment_submissions').select('*, student:profiles(id,full_name,email,roll_number), assignment:assignments(id,title,max_marks)')
-    .eq('assignment_id', assignmentId).order('submitted_at', { ascending: false });
+    .from('assignment_submissions')
+    .select(`
+      *,
+      student:profiles!assignment_submissions_student_id_fkey(
+        id,
+        full_name,
+        email,
+        roll_number
+      ),
+      assignment:assignments(
+        id,
+        title,
+        max_marks
+      )
+    `)
+    .eq('assignment_id', assignmentId)
+    .order('submitted_at', { ascending: false });
+
   if (error) throw error;
+
   return data as AssignmentSubmissionWithDetails[];
 }
 
@@ -305,11 +324,30 @@ export async function fetchLabTask(id: string): Promise<LabTaskWithDetails | nul
   return data as LabTaskWithDetails | null;
 }
 
-export async function fetchLabSubmissions(labTaskId: string): Promise<LabSubmissionWithDetails[]> {
+export async function fetchLabSubmissions(
+  labTaskId: string
+): Promise<LabSubmissionWithDetails[]> {
   const { data, error } = await supabase
-    .from('lab_submissions').select('*, student:profiles(id,full_name,email,roll_number), lab_task:lab_tasks(id,title,max_marks)')
-    .eq('lab_task_id', labTaskId).order('submitted_at', { ascending: false });
+    .from('lab_submissions')
+    .select(`
+      *,
+      student:profiles!lab_submissions_student_id_fkey(
+        id,
+        full_name,
+        email,
+        roll_number
+      ),
+      lab_task:lab_tasks(
+        id,
+        title,
+        max_marks
+      )
+    `)
+    .eq('lab_task_id', labTaskId)
+    .order('submitted_at', { ascending: false });
+
   if (error) throw error;
+
   return data as LabSubmissionWithDetails[];
 }
 
@@ -740,6 +778,19 @@ export async function fetchQuizSubmission(quizId: string, studentId: string): Pr
     .select('*').eq('quiz_id', quizId).eq('student_id', studentId).maybeSingle();
   if (error) throw error;
   return data as unknown as QuizSubmission | null;
+}
+
+export async function fetchQuizSubmissionsByQuizIds(quizIds: string[]): Promise<QuizSubmission[]> {
+  if (quizIds.length === 0) return [];
+
+  const { data, error } = await supabase
+    .from('quiz_submissions')
+    .select('*')
+    .in('quiz_id', quizIds);
+
+  if (error) throw error;
+
+  return data as unknown as QuizSubmission[];
 }
 
 
