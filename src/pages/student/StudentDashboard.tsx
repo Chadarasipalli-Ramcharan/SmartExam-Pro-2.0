@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
-  ClipboardList, FileText, FlaskConical, BookOpen, Bell, TrendingUp,
+  ClipboardList, ClipboardCheck, FlaskConical, BookOpen, Bell, TrendingUp,
 } from 'lucide-react';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -10,12 +10,17 @@ import { StatCard } from '@/components/StatCard';
 import { SkeletonCard, SkeletonRow } from '@/components/Loading';
 import { PageHeader } from '@/components/PageHeader';
 import {
-  fetchAssignments, fetchLabTasks, fetchMaterials,
-  fetchNotifications, fetchPublishedExams, fetchStudentResults,
+  fetchAssignments,
+  fetchLabTasks,
+  fetchMaterials,
+  fetchNotifications,
+  fetchQuizzes,
+  fetchStudentResults,
 } from '@/lib/queries';
 import type {
   AssignmentWithDetails, LabTaskWithDetails, MaterialWithDetails,
   Notification, Exam, Result,
+  Quiz,
 } from '@/types';
 
 interface TrendPoint {
@@ -30,7 +35,7 @@ export function StudentDashboard() {
   const [labTasks, setLabTasks] = useState<LabTaskWithDetails[]>([]);
   const [materials, setMaterials] = useState<MaterialWithDetails[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [exams, setExams] = useState<Exam[]>([]);
+  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [results, setResults] = useState<Result[]>([]);
 
   useEffect(() => {
@@ -38,20 +43,20 @@ export function StudentDashboard() {
     let mounted = true;
     (async () => {
       try {
-        const [a, l, m, n, e, r] = await Promise.all([
-          fetchAssignments(),
-          fetchLabTasks(),
-          fetchMaterials(),
-          fetchNotifications(profile.id),
-          fetchPublishedExams(),
-          fetchStudentResults(profile.id),
-        ]);
+        const [a, l, m, n, q, r] = await Promise.all([
+  fetchAssignments(),
+  fetchLabTasks(),
+  fetchMaterials(),
+  fetchNotifications(profile.id),
+  fetchQuizzes(),
+  fetchStudentResults(profile.id),
+]);
         if (!mounted) return;
         setAssignments(a);
         setLabTasks(l);
         setMaterials(m);
         setNotifications(n);
-        setExams(e);
+setQuizzes(q);
         setResults(r);
       } catch (err) {
         console.error('Dashboard load error:', err);
@@ -70,7 +75,7 @@ export function StudentDashboard() {
   const myLabTasks = labTasks.filter(
     (t) => t.status === 'published' && t.section_id === sectionId,
   );
-  const myExams = exams.filter((e) => e.section_id === sectionId);
+const myQuizzes = quizzes.filter((q) => q.section_id === sectionId);
   const unreadNotifications = notifications.filter((n) => !n.is_read);
 
   const trendData: TrendPoint[] = results
@@ -107,18 +112,18 @@ export function StudentDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
         <StatCard
           icon={ClipboardList}
-          label="Upcoming Assignments"
+          label=" Assignments"
           value={myAssignments.length}
-          hint="Pending submissions"
+          hint="Avaliable assignments"
           color="primary"
         />
         <StatCard
-          icon={FileText}
-          label="Exams"
-          value={myExams.length}
-          hint="Published & available"
-          color="accent"
-        />
+  icon={ClipboardCheck}
+  label="Quizzes"
+  value={myQuizzes.length}
+  hint="Available quizzes"
+  color="accent"
+/>
         <StatCard
           icon={FlaskConical}
           label="Lab Tasks"

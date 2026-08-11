@@ -742,6 +742,7 @@ export async function fetchQuizSubmission(quizId: string, studentId: string): Pr
   return data as unknown as QuizSubmission | null;
 }
 
+
 export async function createQuizSubmission(payload: {
   quiz_id: string; student_id: string; total_marks: number;
 }): Promise<QuizSubmission> {
