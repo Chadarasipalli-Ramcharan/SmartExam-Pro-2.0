@@ -76,6 +76,7 @@ export async function fetchStudentProfiles(): Promise<Profile[]> {
   return data as Profile[];
 }
 
+
 export async function fetchFacultyProfiles(): Promise<Profile[]> {
   const { data, error } = await supabase.from('profiles').select('*').eq('role', 'faculty').order('created_at', { ascending: false });
   if (error) throw error;
@@ -155,20 +156,65 @@ export async function fetchAcademicYears(): Promise<AcademicYear[]> {
   return data as AcademicYear[];
 }
 
-export async function fetchSemesters(departmentId?: string): Promise<Semester[]> {
-  let q = supabase.from('semesters').select('*').order('name');
-  if (departmentId) q = q.eq('department_id', departmentId);
-  const { data, error } = await q;
-  if (error) throw error;
-  return data as Semester[];
-}
+export async function fetchSemesters(
+  departmentId?: string,
+  academicYearId?: string
+): Promise<Semester[]> {
+  console.log('========== FETCH SEMESTERS ==========');
+  console.log('departmentId:', departmentId);
+  console.log('academicYearId:', academicYearId);
 
-export async function fetchSections(semesterId?: string): Promise<Section[]> {
-  let q = supabase.from('sections').select('*').order('name');
-  if (semesterId) q = q.eq('semester_id', semesterId);
+  if (!departmentId || !academicYearId) {
+    console.log('Missing department or academic year');
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from('semesters')
+    .select('*')
+    .eq('department_id', departmentId)
+    .eq('academic_year_id', academicYearId)
+    .order('name');
+
+  console.log('SEMESTERS RESULT:', data);
+  console.log('SEMESTERS ERROR:', error);
+
+  if (error) {
+    throw error;
+  }
+
+  return (data ?? []) as Semester[];
+}
+export async function fetchSections(
+  departmentId?: string,
+  semesterId?: string
+): Promise<Section[]> {
+  let q = supabase
+    .from('sections')
+    .select('*')
+    .order('name', { ascending: true });
+
+  if (departmentId) {
+    q = q.eq('department_id', departmentId);
+  }
+
+  if (semesterId) {
+    q = q.eq('semester_id', semesterId);
+  }
+
   const { data, error } = await q;
-  if (error) throw error;
-  return data as Section[];
+
+  console.log('========== FETCH SECTIONS ==========');
+  console.log('departmentId:', departmentId);
+  console.log('semesterId:', semesterId);
+  console.log('SECTIONS RESULT:', data);
+  console.log('SECTIONS ERROR:', error);
+
+  if (error) {
+    throw error;
+  }
+
+  return (data ?? []) as Section[];
 }
 
 export async function fetchSubjects(

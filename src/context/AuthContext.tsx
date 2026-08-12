@@ -80,38 +80,62 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function signUp(data: SignUpData) {
-    const metaData: Record<string, string> = { full_name: data.fullName, role: data.role };
-    if (data.employeeId) metaData.employee_id = data.employeeId;
-    if (data.enrollmentNumber) metaData.enrollment_number = data.enrollmentNumber;
-    if (data.rollNumber) metaData.roll_number = data.rollNumber;
-    if (data.designation) metaData.designation = data.designation;
-    if (data.departmentId) metaData.department_id = data.departmentId;
-    if (data.academicYearId) metaData.academic_year_id = data.academicYearId;
-    if (data.semesterId) metaData.semester_id = data.semesterId;
-    if (data.sectionId) metaData.section_id = data.sectionId;
+  const metaData: Record<string, string> = {
+    full_name: data.fullName,
+    role: data.role,
+  };
 
-    const { data: res, error } = await supabase.auth.signUp({
-      email: data.email,
-      password: data.password,
-      options: { data: metaData },
-    });
-    if (error) return { error: error.message };
-    if (res.user) {
-      // Update profile with the university structure columns (the trigger creates the base row)
-      const updates: Record<string, string | null> = {};
-      if (data.departmentId) updates.department_id = data.departmentId;
-      if (data.employeeId) updates.employee_id = data.employeeId;
-      if (data.enrollmentNumber) updates.enrollment_number = data.enrollmentNumber;
-      if (data.rollNumber) updates.roll_number = data.rollNumber;
-      if (data.designation) updates.designation = data.designation;
-      if (data.academicYearId) updates.academic_year_id = data.academicYearId;
-      if (data.semesterId) updates.semester_id = data.semesterId;
-      if (data.sectionId) updates.section_id = data.sectionId;
-      if (Object.keys(updates).length > 0) {
-        await supabase.from('profiles').update(updates).eq('id', res.user.id);
-      }
-      await loadProfile(res.user.id);
-    }
+  if (data.employeeId) {
+    metaData.employee_id = data.employeeId;
+  }
+
+  if (data.enrollmentNumber) {
+    metaData.enrollment_number = data.enrollmentNumber;
+  }
+
+  if (data.rollNumber) {
+    metaData.roll_number = data.rollNumber;
+  }
+
+  if (data.designation) {
+    metaData.designation = data.designation;
+  }
+
+  if (data.departmentId) {
+    metaData.department_id = data.departmentId;
+  }
+
+  if (data.academicYearId) {
+    metaData.academic_year_id = data.academicYearId;
+  }
+
+  if (data.semesterId) {
+    metaData.semester_id = data.semesterId;
+  }
+
+  if (data.sectionId) {
+    metaData.section_id = data.sectionId;
+  }
+
+  console.log('Registering user with metadata:', metaData);
+
+  const { data: res, error } = await supabase.auth.signUp({
+    email: data.email,
+    password: data.password,
+    options: {
+      data: metaData,
+    },
+  });
+
+  if (error) {
+    console.error('Supabase signup error:', error);
+    return { error: error.message };
+  }
+
+  console.log('User created:', res.user?.id);
+  console.log('Session:', res.session);
+
+
     return { error: null };
   }
 

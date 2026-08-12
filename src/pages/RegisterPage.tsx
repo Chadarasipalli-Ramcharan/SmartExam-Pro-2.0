@@ -3,9 +3,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import { GraduationCap, Mail, Lock, User, Eye, EyeOff, ArrowRight, AlertCircle, Phone, Hash, Building2 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
-import { fetchDepartments, fetchAcademicYears } from '@/lib/queries';
-import type { Department, AcademicYear } from '@/types';
-
+import {
+  fetchDepartments,
+  fetchAcademicYears,
+  fetchSemesters,
+  fetchSections
+} from '@/lib/queries';
+import type {
+  Department,
+  AcademicYear,
+  Semester,
+  Section
+} from '@/types';
 export function RegisterPage() {
   const { signUp } = useAuth();
   const { toast } = useToast();
@@ -28,6 +37,11 @@ export function RegisterPage() {
   const [enrollmentNumber, setEnrollmentNumber] = useState('');
   const [employeeId, setEmployeeId] = useState('');
   const [designation, setDesignation] = useState('');
+  const [semesters, setSemesters] = useState<Semester[]>([]);
+const [sections, setSections] = useState<Section[]>([]);
+
+const [semesterId, setSemesterId] = useState('');
+const [sectionId, setSectionId] = useState('');
 
   useEffect(() => {
   async function loadUniversityStructure() {
@@ -53,6 +67,74 @@ export function RegisterPage() {
   loadUniversityStructure();
 }, []);  
 
+useEffect(() => {
+  async function loadSemesters() {
+    // Clear old semester/section data immediately
+    setSemesters([]);
+    setSemesterId('');
+    setSections([]);
+    setSectionId('');
+
+    if (!departmentId || !academicYearId) {
+      return;
+    }
+
+    try {
+      console.log('Loading semesters for:', {
+        departmentId,
+        academicYearId,
+      });
+
+      const data = await fetchSemesters(
+        departmentId,
+        academicYearId
+      );
+
+      console.log('Semesters returned for selected department/year:', data);
+
+      setSemesters(data);
+    } catch (err) {
+      console.error('Semester loading error:', err);
+      setSemesters([]);
+    }
+  }
+
+  loadSemesters();
+}, [departmentId, academicYearId]);
+
+useEffect(() => {
+  async function loadSections() {
+    if (!departmentId || !academicYearId || !semesterId) {
+      setSections([]);
+      setSectionId('');
+      return;
+    }
+
+    try {
+      console.log(
+        'Loading sections:',
+        departmentId,
+        academicYearId,
+        semesterId
+      );
+
+     const data = await fetchSections(
+  departmentId,
+  semesterId
+);
+
+      console.log('Sections loaded:', data);
+
+      setSections(data);
+    } catch (err) {
+      console.error('Section loading error:', err);
+      setSections([]);
+    }
+  }
+
+  loadSections();
+}, [departmentId, academicYearId, semesterId]);
+
   function validate(): string | null {
     if (fullName.trim().length < 3 || fullName.trim().length > 50) return 'Full name must be 3–50 characters.';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Please enter a valid email address.';
@@ -61,9 +143,22 @@ export function RegisterPage() {
     if (password !== confirm) return 'Passwords do not match.';
     if (!departmentId) return 'Please select a department.';
     if (role === 'student') {
-      if (!enrollmentNumber.trim()) return 'Enrollment number is required.';
-      if (!academicYearId) return 'Please select an academic year.';
-    } else {
+  if (!enrollmentNumber.trim()) {
+    return 'Enrollment number is required.';
+  }
+
+  if (!academicYearId) {
+    return 'Please select an academic year.';
+  }
+
+  if (!semesterId) {
+    return 'Please select a semester.';
+  }
+
+  if (!sectionId) {
+    return 'Please select a section.';
+  }
+} else {
       if (!employeeId.trim()) return 'Employee ID is required.';
       if (!designation.trim()) return 'Designation is required.';
     }
@@ -76,14 +171,44 @@ export function RegisterPage() {
     const v = validate();
     if (v) { setError(v); return; }
     setLoading(true);
-    const { error } = await signUp({
-      email, password, fullName: fullName.trim(), role,
-      departmentId,
-      employeeId: role === 'faculty' ? employeeId.trim() : undefined,
-      designation: role === 'faculty' ? designation.trim() : undefined,
-      enrollmentNumber: role === 'student' ? enrollmentNumber.trim() : undefined,
-      academicYearId: role === 'student' ? academicYearId : undefined,
-    });
+   const { error } = await signUp({
+  email,
+  password,
+  fullName: fullName.trim(),
+  role,
+
+  departmentId,
+
+  employeeId:
+    role === 'faculty'
+      ? employeeId.trim()
+      : undefined,
+
+  designation:
+    role === 'faculty'
+      ? designation.trim()
+      : undefined,
+
+  enrollmentNumber:
+    role === 'student'
+      ? enrollmentNumber.trim()
+      : undefined,
+
+  academicYearId:
+    role === 'student'
+      ? academicYearId
+      : undefined,
+
+  semesterId:
+    role === 'student'
+      ? semesterId
+      : undefined,
+
+  sectionId:
+    role === 'student'
+      ? sectionId
+      : undefined,
+});
     setLoading(false);
     if (error) { setError(error); toast('Registration failed', 'error'); return; }
     toast('Account created! Welcome to SmartExam Pro.', 'success');
@@ -167,8 +292,23 @@ export function RegisterPage() {
               <label className="label">Department</label>
               <div className="relative">
                 <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                <select value={departmentId} onChange={(e) => setDepartmentId(e.target.value)} className="input pl-10" required>
-                  <option value="">Select department</option>
+<select
+  value={departmentId}
+  onChange={(e) => {
+    const value = e.target.value;
+
+    setDepartmentId(value);
+
+    setAcademicYearId('');
+    setSemesterId('');
+    setSectionId('');
+
+    setSemesters([]);
+    setSections([]);
+  }}
+  className="input pl-10"
+  required
+>                  <option value="">Select department</option>
                   {departments.map((d) => <option key={d.id} value={d.id}>{d.name} ({d.code})</option>)}
                 </select>
               </div>
@@ -184,12 +324,97 @@ export function RegisterPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="label">Academic Year</label>
-                  <select value={academicYearId} onChange={(e) => setAcademicYearId(e.target.value)} className="input" required>
-                    <option value="">Select year</option>
-                    {academicYears.map((y) => <option key={y.id} value={y.id}>{y.name}</option>)}
-                  </select>
-                </div>
+  <label className="label">Academic Year</label>
+
+  <select
+    value={academicYearId}
+    onChange={(e) => {
+      const value = e.target.value;
+
+      setAcademicYearId(value);
+
+      setSemesterId('');
+      setSectionId('');
+
+      setSections([]);
+    }}
+    className="input"
+    required
+    disabled={!departmentId}
+  >
+    <option value="">
+      {departmentId ? 'Select year' : 'Select department first'}
+    </option>
+
+    {academicYears.map((y) => (
+      <option key={y.id} value={y.id}>
+        {y.name}
+      </option>
+    ))}
+  </select>
+</div>
+
+<div>
+  <label className="label">Semester</label>
+
+  <select
+    value={semesterId}
+    onChange={(e) => {
+      const value = e.target.value;
+
+      setSemesterId(value);
+      setSectionId('');
+      setSections([]);
+    }}
+    className="input"
+    required
+    disabled={!departmentId || !academicYearId}
+  >
+    <option value="">
+      {!departmentId
+        ? 'Select department first'
+        : !academicYearId
+          ? 'Select academic year first'
+          : 'Select semester'}
+    </option>
+
+    {semesters.map((semester) => (
+      <option
+        key={semester.id}
+        value={semester.id}
+      >
+        {semester.name}
+      </option>
+    ))}
+  </select>
+</div>
+
+<div>
+  <label className="label">Section</label>
+
+  <select
+    value={sectionId}
+    onChange={(e) => setSectionId(e.target.value)}
+    className="input"
+    required
+    disabled={!departmentId || !academicYearId || !semesterId}
+  >
+    <option value="">
+      {!semesterId
+        ? 'Select semester first'
+        : 'Select section'}
+    </option>
+
+    {sections.map((section) => (
+      <option
+        key={section.id}
+        value={section.id}
+      >
+        {section.name}
+      </option>
+    ))}
+  </select>
+</div>
               </>
             ) : (
               <>
