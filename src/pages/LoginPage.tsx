@@ -59,16 +59,19 @@ export function LoginPage() {
             <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
               <GraduationCap className="w-6 h-6" />
             </div>
-            <span className="font-bold text-lg">SmartExam Pro</span>
+            <span className="font-bold text-lg">AcadNexus Pro</span>
           </Link>
           <div>
             <h1 className="text-4xl font-extrabold leading-tight">Welcome back to your exam hub.</h1>
             <p className="mt-4 text-primary-100 text-lg max-w-md">Sign in to take exams, view your results, or manage your institution's examinations.</p>
           </div>
           <div className="space-y-3 text-sm text-primary-100">
-            <p className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent-300" /> Super Admin: admin@smartexam.com / Sm@rtEx@m#2026</p>
-            <p className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent-300" /> Faculty: faculty1@smartexam.com / F@cult1y2026!x</p>
-            <p className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent-300" /> Student: student1@smartexam.com / Stud#nt2026!x</p>
+            <p className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent-300" /> Super Admin: admin.test@smartexam.com / Admin@12345</p>
+            <p className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent-300" /> deptadmin: hod.cse@smartexam.com / Hod@12345</p>
+            <p className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent-300" /> Faculty: faculty.cse@smartexam.com / Faculty@12345</p>
+            <p className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent-300" /> Student: student.cse@smartexam.com / Student@12345</p>
+            
+
           </div>
         </div>
       </div>
@@ -80,7 +83,7 @@ export function LoginPage() {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shadow">
               <GraduationCap className="w-6 h-6 text-white" />
             </div>
-            <span className="font-bold text-lg text-slate-900 dark:text-white">SmartExam Pro</span>
+            <span className="font-bold text-lg text-slate-900 dark:text-white">AcadNexus Pro</span>
           </div>
 
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Sign in to your account</h2>

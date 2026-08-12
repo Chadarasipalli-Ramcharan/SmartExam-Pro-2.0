@@ -13,7 +13,7 @@ export function LoadingScreen() {
         <div className="w-2 h-2 rounded-full bg-primary-500 animate-bounce" style={{ animationDelay: '150ms' }} />
         <div className="w-2 h-2 rounded-full bg-primary-500 animate-bounce" style={{ animationDelay: '300ms' }} />
       </div>
-      <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">Loading SmartExam Pro…</p>
+      <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">Loading AcadNexus Pro…</p>
     </div>
   );
 }

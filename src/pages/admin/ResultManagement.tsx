@@ -48,7 +48,7 @@ export function ResultManagement() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'smartexam-results.csv';
+    a.download = 'AcadNexus-results.csv';
     a.click();
     URL.revokeObjectURL(url);
     toast('Results exported to CSV', 'success');

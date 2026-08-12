@@ -186,7 +186,7 @@ export function LandingPage() {
 
               <div className="min-w-0">
                 <div className="truncate text-base font-bold tracking-tight text-white sm:text-lg">
-                  SmartExam{' '}
+                  AcadNexus{' '}
                   <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
                     Pro
                   </span>
@@ -363,7 +363,7 @@ export function LandingPage() {
 
                     <div className="mx-auto hidden h-6 w-1/2 rounded-md border border-white/5 bg-white/[0.04] sm:flex sm:items-center sm:px-3">
                       <span className="text-[8px] text-slate-600">
-                        smartexampro.edu/dashboard
+                        AcadNexus Pro.edu/dashboard
                       </span>
                     </div>
 
@@ -387,7 +387,7 @@ export function LandingPage() {
 
                         <div>
                           <p className="text-xs font-bold text-white">
-                            SmartExam Pro
+                            AcadNexus Pro
                           </p>
 
                           <p className="text-[9px] text-slate-500">
@@ -450,7 +450,7 @@ export function LandingPage() {
 
                           <div>
                             <p className="text-[11px] font-bold text-white">
-                              SmartExam Pro
+                              AcadNexus Pro
                             </p>
 
                             <p className="text-[8px] text-slate-500">
@@ -821,7 +821,7 @@ export function LandingPage() {
                 </h2>
 
                 <p className="mt-5 text-sm leading-6 text-slate-400 sm:text-base sm:leading-7">
-                  SmartExam Pro separates responsibilities across the
+                  AcadNexus Pro separates responsibilities across the
                   university while keeping the complete academic ecosystem
                   connected.
                 </p>
@@ -972,7 +972,7 @@ export function LandingPage() {
             </div>
 
             <span className="font-bold text-white">
-              SmartExam{' '}
+              AcadNexus{' '}
               <span className="text-cyan-400">
                 Pro
               </span>

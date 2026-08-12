@@ -73,7 +73,7 @@ export function StudentAcademicRecords() {
         th { background: #f1f5f9; font-weight: 600; }
         .footer { margin-top: 32px; font-size: 12px; color: #94a3b8; text-align: center; }
       </style></head><body>
-      <h1>SmartExam Pro - Academic Mark Sheet</h1>
+      <h1>AcadNexus Pro - Academic Mark Sheet</h1>
       <p class="sub">Official Academic Record</p>
       <div class="info">
         <p><strong>Name:</strong> ${profile.full_name}</p>
@@ -88,7 +88,7 @@ export function StudentAcademicRecords() {
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
-      <p class="footer">This is a system-generated mark sheet. SmartExam Pro 2.0</p>
+      <p class="footer">This is a system-generated mark sheet. AcadNexus Pro 2.0</p>
       </body></html>`);
     printWindow.document.close();
     printWindow.print();

@@ -89,7 +89,7 @@ const myQuizzes = quizzes.filter((q) => q.section_id === sectionId);
   if (loading) {
     return (
       <div className="animate-fade-in">
-        <PageHeader title="Dashboard" subtitle="Welcome back to SmartExam Pro" />
+        <PageHeader title="Dashboard" subtitle="Welcome back to AcadNexus Pro" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
           {Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)}
         </div>

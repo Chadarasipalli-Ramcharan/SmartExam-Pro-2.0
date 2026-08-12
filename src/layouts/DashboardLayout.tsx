@@ -114,7 +114,7 @@ export function DashboardLayout() {
             <GraduationCap className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="font-bold text-slate-900 dark:text-white leading-tight">SmartExam</p>
+            <p className="font-bold text-slate-900 dark:text-white leading-tight">AcadNexus Pro</p>
             <p className="text-xs text-primary-600 dark:text-primary-400 font-medium">Pro 2.0</p>
           </div>
         </div>

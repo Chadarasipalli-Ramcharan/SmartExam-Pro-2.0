@@ -211,7 +211,7 @@ useEffect(() => {
 });
     setLoading(false);
     if (error) { setError(error); toast('Registration failed', 'error'); return; }
-    toast('Account created! Welcome to SmartExam Pro.', 'success');
+    toast('Account created! Welcome to AcadNexus Pro.', 'success');
     navigate(role === 'faculty' ? '/faculty' : '/dashboard');
   }
 
@@ -225,7 +225,7 @@ useEffect(() => {
             <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
               <GraduationCap className="w-6 h-6" />
             </div>
-            <span className="font-bold text-lg">SmartExam Pro</span>
+            <span className="font-bold text-lg">AcadNexus Pro</span>
           </Link>
           <div>
             <h1 className="text-4xl font-extrabold leading-tight">Join the university academic platform.</h1>
@@ -241,7 +241,7 @@ useEffect(() => {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shadow">
               <GraduationCap className="w-6 h-6 text-white" />
             </div>
-            <span className="font-bold text-lg text-slate-900 dark:text-white">SmartExam Pro</span>
+            <span className="font-bold text-lg text-slate-900 dark:text-white">AcadNexus Pro</span>
           </div>
 
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Create your account</h2>
