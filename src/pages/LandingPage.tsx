@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { LucideIcon } from 'lucide-react';
 import {
@@ -25,6 +26,8 @@ import {
   Award,
   Menu,
   MoreHorizontal,
+  Sun,
+  Moon,
 } from 'lucide-react';
 
 import { useAuth } from '@/context/AuthContext';
@@ -43,6 +46,11 @@ type Stat = {
 
 export function LandingPage() {
   const { session } = useAuth();
+
+  // =========================================================
+  // DARK / LIGHT MODE
+  // =========================================================
+  const [isDark, setIsDark] = useState(true);
 
   const features: Feature[] = [
     {
@@ -166,7 +174,213 @@ export function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-slate-950 text-white">
+    <div
+      className={`acadnexus-page min-h-screen w-full overflow-x-hidden transition-colors duration-500 ${
+        isDark
+          ? 'bg-slate-950 text-white'
+          : 'bg-slate-50 text-slate-900'
+      }`}
+    >
+      {/* =========================================================
+          LIGHT MODE OVERRIDES
+          ========================================================= */}
+      <style>{`
+        .acadnexus-page {
+          --page-bg: #020617;
+          --page-text: #ffffff;
+          --secondary-text: #94a3b8;
+          --muted-text: #64748b;
+          --border-color: rgba(255,255,255,0.10);
+          --card-bg: rgba(255,255,255,0.045);
+          --card-bg-hover: rgba(255,255,255,0.08);
+          --glass-bg: rgba(255,255,255,0.10);
+        }
+
+        .acadnexus-page.acadnexus-light {
+          --page-bg: #f8fafc;
+          --page-text: #0f172a;
+          --secondary-text: #475569;
+          --muted-text: #64748b;
+          --border-color: rgba(15,23,42,0.10);
+          --card-bg: rgba(255,255,255,0.78);
+          --card-bg-hover: rgba(255,255,255,0.95);
+          --glass-bg: rgba(255,255,255,0.72);
+        }
+
+        /* Main backgrounds */
+        .acadnexus-light .bg-slate-950 {
+          background-color: #f8fafc !important;
+        }
+
+        .acadnexus-light .bg-slate-950\\/95 {
+          background-color: rgba(248,250,252,0.95) !important;
+        }
+
+        .acadnexus-light .bg-slate-950\\/90 {
+          background-color: rgba(248,250,252,0.90) !important;
+        }
+
+        .acadnexus-light .bg-slate-950\\/85 {
+          background-color: rgba(248,250,252,0.85) !important;
+        }
+
+        .acadnexus-light .bg-slate-950\\/80 {
+          background-color: rgba(248,250,252,0.80) !important;
+        }
+
+        .acadnexus-light .bg-white\\/5 {
+          background-color: rgba(15,23,42,0.05) !important;
+        }
+
+        .acadnexus-light .bg-white\\/10 {
+          background-color: rgba(255,255,255,0.72) !important;
+        }
+
+        .acadnexus-light .bg-white\\/15 {
+          background-color: rgba(255,255,255,0.90) !important;
+        }
+
+        .acadnexus-light .bg-white\\/\\[0\\.025\\] {
+          background-color: rgba(15,23,42,0.025) !important;
+        }
+
+        .acadnexus-light .bg-white\\/\\[0\\.035\\] {
+          background-color: rgba(255,255,255,0.78) !important;
+        }
+
+        .acadnexus-light .bg-white\\/\\[0\\.045\\] {
+          background-color: rgba(255,255,255,0.82) !important;
+        }
+
+        .acadnexus-light .bg-white\\/\\[0\\.08\\] {
+          background-color: rgba(255,255,255,0.95) !important;
+        }
+
+        .acadnexus-light .bg-white\\/\\[0\\.03\\] {
+          background-color: rgba(15,23,42,0.03) !important;
+        }
+
+        .acadnexus-light .bg-white\\/\\[0\\.04\\] {
+          background-color: rgba(15,23,42,0.04) !important;
+        }
+
+        /* Text */
+        .acadnexus-light .text-white {
+          color: #0f172a !important;
+        }
+
+        .acadnexus-light .text-slate-200 {
+          color: #334155 !important;
+        }
+
+        .acadnexus-light .text-slate-300 {
+          color: #475569 !important;
+        }
+
+        .acadnexus-light .text-slate-400 {
+          color: #64748b !important;
+        }
+
+        .acadnexus-light .text-slate-500 {
+          color: #64748b !important;
+        }
+
+        .acadnexus-light .text-slate-600 {
+          color: #475569 !important;
+        }
+
+        /* Borders */
+        .acadnexus-light .border-white\\/10 {
+          border-color: rgba(15,23,42,0.10) !important;
+        }
+
+        .acadnexus-light .border-white\\/15 {
+          border-color: rgba(15,23,42,0.13) !important;
+        }
+
+        .acadnexus-light .border-white\\/5 {
+          border-color: rgba(15,23,42,0.06) !important;
+        }
+
+        /* Navbar */
+        .acadnexus-light header nav {
+          background: rgba(255,255,255,0.78) !important;
+          border-color: rgba(15,23,42,0.10) !important;
+          box-shadow:
+            0 20px 50px rgba(15,23,42,0.08) !important;
+        }
+
+        /* Hero image overlay becomes lighter */
+        .acadnexus-light .hero-overlay {
+          background: rgba(248,250,252,0.72) !important;
+        }
+
+        /* Feature / CTA image overlays */
+        .acadnexus-light .section-image-overlay {
+          background: rgba(248,250,252,0.88) !important;
+        }
+
+        .acadnexus-light .cta-image-overlay {
+          background: rgba(248,250,252,0.78) !important;
+        }
+
+        /* Dashboard preview */
+        .acadnexus-light .dashboard-preview {
+          background: rgba(255,255,255,0.88) !important;
+          border-color: rgba(15,23,42,0.10) !important;
+        }
+
+        .acadnexus-light .browser-bar {
+          background: #f8fafc !important;
+          border-color: rgba(15,23,42,0.10) !important;
+        }
+
+        .acadnexus-light .dashboard-main {
+          background: #f8fafc !important;
+        }
+
+        /* Keep important gradient text white */
+        .acadnexus-light .gradient-brand-text {
+          color: transparent !important;
+        }
+
+        /* Toggle */
+        .theme-toggle {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .theme-toggle-icon {
+          transition:
+            transform 0.4s ease,
+            opacity 0.3s ease;
+        }
+
+        .theme-toggle:hover .theme-toggle-icon {
+          transform: rotate(20deg) scale(1.08);
+        }
+
+        /* Smooth theme transition */
+        .acadnexus-page,
+        .acadnexus-page * {
+          transition-property:
+            background-color,
+            border-color,
+            color,
+            box-shadow;
+          transition-duration: 300ms;
+          transition-timing-function: ease;
+        }
+
+        /* Do not animate transforms/animations globally */
+        .acadnexus-page .transition,
+        .acadnexus-page .transition-all,
+        .acadnexus-page .transition-transform,
+        .acadnexus-page [class*="animate-"] {
+          transition-property: all;
+        }
+      `}</style>
+
       {/* =========================================================
           NAVBAR
       ========================================================= */}
@@ -198,7 +412,43 @@ export function LandingPage() {
               </div>
             </Link>
 
+            {/* =====================================================
+                NAVBAR ACTIONS
+            ===================================================== */}
+
             <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
+              {/* DARK / LIGHT TOGGLE */}
+
+              <button
+                type="button"
+                onClick={() => setIsDark((current) => !current)}
+                aria-label={
+                  isDark
+                    ? 'Switch to light mode'
+                    : 'Switch to dark mode'
+                }
+                title={
+                  isDark
+                    ? 'Switch to light mode'
+                    : 'Switch to dark mode'
+                }
+                className={`theme-toggle group relative flex h-10 w-10 items-center justify-center rounded-xl border shadow-lg backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 sm:h-11 sm:w-11 ${
+                  isDark
+                    ? 'border-white/15 bg-white/10 text-yellow-300 hover:bg-white/15'
+                    : 'border-slate-200 bg-white/80 text-slate-700 shadow-slate-200/50 hover:bg-white'
+                }`}
+              >
+                {isDark ? (
+                  <Sun className="theme-toggle-icon h-4.5 w-4.5 sm:h-5 sm:w-5" />
+                ) : (
+                  <Moon className="theme-toggle-icon h-4.5 w-4.5 sm:h-5 sm:w-5" />
+                )}
+
+                <span className="absolute -bottom-8 left-1/2 hidden -translate-x-1/2 whitespace-nowrap rounded-lg bg-slate-900 px-2 py-1 text-[9px] font-medium text-white shadow-xl group-hover:block">
+                  {isDark ? 'Light mode' : 'Dark mode'}
+                </span>
+              </button>
+
               {session ? (
                 <Link
                   to="/dashboard"
@@ -253,9 +503,13 @@ export function LandingPage() {
             }}
           />
 
-          {/* Dark overlay */}
+          {/* Dark / Light overlay */}
 
-          <div className="absolute inset-0 bg-slate-950/85" />
+          <div
+            className={`hero-overlay absolute inset-0 ${
+              isDark ? 'bg-slate-950/85' : 'bg-slate-50/72'
+            }`}
+          />
 
           {/* Image grid */}
 
@@ -287,7 +541,7 @@ export function LandingPage() {
                 </span>
 
                 <span className="mt-2 block px-1 font-sans text-3xl font-extrabold tracking-[-0.035em] sm:text-5xl lg:px-0 lg:text-7xl">
-                  <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-sky-400 bg-clip-text text-transparent">
+                  <span className="gradient-brand-text bg-gradient-to-r from-blue-400 via-cyan-300 to-sky-400 bg-clip-text text-transparent">
                     Your entire university.
                   </span>
                 </span>
@@ -351,10 +605,10 @@ export function LandingPage() {
               <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-blue-500/30 via-cyan-400/20 to-purple-500/30 blur-3xl" />
 
               <div className="relative w-full rounded-2xl border border-white/15 bg-white/10 p-1 shadow-[0_30px_100px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:rounded-[2rem] sm:p-2">
-                <div className="w-full overflow-hidden rounded-xl border border-white/10 bg-slate-950/95 sm:rounded-[1.5rem]">
+                <div className="dashboard-preview w-full overflow-hidden rounded-xl border border-white/10 bg-slate-950/95 sm:rounded-[1.5rem]">
                   {/* Browser bar */}
 
-                  <div className="flex h-10 items-center gap-1.5 border-b border-white/10 bg-slate-950 px-3 sm:h-11 sm:gap-2 sm:px-4">
+                  <div className="browser-bar flex h-10 items-center gap-1.5 border-b border-white/10 bg-slate-950 px-3 sm:h-11 sm:gap-2 sm:px-4">
                     <span className="h-2 w-2 rounded-full bg-red-400/70 sm:h-2.5 sm:w-2.5" />
 
                     <span className="h-2 w-2 rounded-full bg-yellow-400/70 sm:h-2.5 sm:w-2.5" />
@@ -376,7 +630,7 @@ export function LandingPage() {
 
                   {/* Main dashboard */}
 
-                  <div className="grid min-h-[390px] w-full grid-cols-12 bg-slate-950 sm:min-h-[500px]">
+                  <div className="dashboard-main grid min-h-[390px] w-full grid-cols-12 bg-slate-950 sm:min-h-[500px]">
                     {/* Desktop Sidebar */}
 
                     <div className="col-span-3 hidden border-r border-white/10 bg-white/[0.025] p-4 md:block lg:p-5">
@@ -738,7 +992,11 @@ export function LandingPage() {
             }}
           />
 
-          <div className="absolute inset-0 bg-slate-950/90" />
+          <div
+            className={`section-image-overlay absolute inset-0 ${
+              isDark ? 'bg-slate-950/90' : 'bg-slate-50/88'
+            }`}
+          />
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mx-auto mb-10 max-w-3xl px-2 text-center sm:mb-14 sm:px-0">
@@ -918,9 +1176,13 @@ export function LandingPage() {
               }}
             />
 
-            {/* Dark overlay */}
+            {/* Dark / Light overlay */}
 
-            <div className="absolute inset-0 bg-slate-950/80" />
+            <div
+              className={`cta-image-overlay absolute inset-0 ${
+                isDark ? 'bg-slate-950/80' : 'bg-slate-50/78'
+              }`}
+            />
 
             {/* Blue gradient */}
 
